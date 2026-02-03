@@ -64,30 +64,43 @@ pip3 install -r requirements.txt
 
 ## Configuration
 
-Edit the configuration section at the top of `tor-daily-report.py`:
+Copy the example config and customize it:
 
-```python
+```bash
+cp config.toml.example config.toml
+nano config.toml  # or your preferred editor
+```
+
+The config file is organized into sections:
+
+```toml
 # Tor control port settings
-TOR_CONTROL_HOST = "127.0.0.1"
-TOR_CONTROL_PORT = 9051
-TOR_CONTROL_PASSWORD = None  # Set if using password auth, otherwise uses cookie
+[tor]
+host = "127.0.0.1"
+port = 9051
+password = ""  # Leave empty for cookie auth
 
-# Email settings
-SMTP_HOST = "smtp.mail.com"
-SMTP_PORT = 587
-SMTP_USERNAME = "your-email@example.com"
-SMTP_PASSWORD = "your-password"
-SMTP_USE_TLS = True
+# Email/SMTP settings
+[email]
+smtp_host = "smtp.example.com"
+smtp_port = 587
+smtp_username = "your-email@example.com"
+smtp_password = "your-password"
+use_tls = true
+from_address = "your-email@example.com"
+to_address = "your-email@example.com"
 
-# Report settings
-EMAIL_FROM = "your-email@example.com"
-EMAIL_TO = "your-email@example.com"
-RELAY_NICKNAME = "YourRelay"
+# Relay settings
+[relay]
+nickname = "YourRelay"
 
 # Alert thresholds
-MIN_CONNECTIONS_WARN = 100  # Warning if fewer connections
-MIN_CONNECTIONS_CRIT = 50   # Critical if fewer connections
+[alerts]
+min_connections_warn = 100
+min_connections_crit = 50
 ```
+
+**Note:** `config.toml` contains secrets and is excluded from git. Only `config.toml.example` is tracked.
 
 ### Control Port Access
 

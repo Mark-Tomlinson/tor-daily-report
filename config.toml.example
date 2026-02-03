@@ -1,0 +1,28 @@
+# Tor Relay Daily Report Configuration
+# Copy this file to config.toml and customize for your relay
+
+# Tor control port settings
+[tor]
+host = "127.0.0.1"
+port = 9051
+password = ""  # Leave empty for cookie authentication (recommended)
+
+# Email/SMTP settings
+[email]
+smtp_host = "smtp.example.com"
+smtp_port = 587
+smtp_username = "your-email@example.com"
+smtp_password = "your-password-here"
+use_tls = true
+
+from_address = "your-email@example.com"
+to_address = "your-email@example.com"  # Where to send reports
+
+# Relay settings
+[relay]
+nickname = "YourRelayName"  # Used in email subject line
+
+# Alert thresholds
+[alerts]
+min_connections_warn = 100  # Warning if fewer connections than this
+min_connections_crit = 50   # Critical if fewer connections than this

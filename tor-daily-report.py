@@ -21,9 +21,12 @@ Cron examples:
 import argparse
 import smtplib
 import socket
+import sys
+import tomllib
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from pathlib import Path
 
 from stem.control import Controller
 
@@ -31,26 +34,43 @@ from stem.control import Controller
 # CONFIGURATION
 # =============================================================================
 
+def load_config():
+    """Load configuration from config.toml."""
+    config_path = Path(__file__).parent / "config.toml"
+
+    if not config_path.exists():
+        print(f"Error: Configuration file not found: {config_path}")
+        print("Copy config.toml.example to config.toml and customize it.")
+        sys.exit(1)
+
+    with open(config_path, "rb") as f:
+        return tomllib.load(f)
+
+
+# Load config at module level
+CONFIG = load_config()
+
 # Tor control port settings
-TOR_CONTROL_HOST = "127.0.0.1"
-TOR_CONTROL_PORT = 9051
-TOR_CONTROL_PASSWORD = None  # Set if using password auth, otherwise uses cookie
+TOR_CONTROL_HOST = CONFIG["tor"]["host"]
+TOR_CONTROL_PORT = CONFIG["tor"]["port"]
+TOR_CONTROL_PASSWORD = CONFIG["tor"]["password"] or None  # Empty string -> None
 
-# Email settings (Mail.com SMTP)
-SMTP_HOST = "smtp.mail.com"
-SMTP_PORT = 587  # TLS
-SMTP_USERNAME = "tor.relay@activist.com"
-SMTP_PASSWORD = "YOUR_PASSWORD_HERE"  # TODO: Set your password
-SMTP_USE_TLS = True
+# Email settings
+SMTP_HOST = CONFIG["email"]["smtp_host"]
+SMTP_PORT = CONFIG["email"]["smtp_port"]
+SMTP_USERNAME = CONFIG["email"]["smtp_username"]
+SMTP_PASSWORD = CONFIG["email"]["smtp_password"]
+SMTP_USE_TLS = CONFIG["email"]["use_tls"]
 
-# Report settings
-EMAIL_FROM = "tor.relay@activist.com"
-EMAIL_TO = "tor.relay@activist.com"  # Send to yourself, or change as needed
-RELAY_NICKNAME = "OnionPie"  # For the subject line
+EMAIL_FROM = CONFIG["email"]["from_address"]
+EMAIL_TO = CONFIG["email"]["to_address"]
+
+# Relay settings
+RELAY_NICKNAME = CONFIG["relay"]["nickname"]
 
 # Alert thresholds
-MIN_CONNECTIONS_WARN = 100  # Warn if fewer connections than this
-MIN_CONNECTIONS_CRIT = 50   # Critical if fewer than this
+MIN_CONNECTIONS_WARN = CONFIG["alerts"]["min_connections_warn"]
+MIN_CONNECTIONS_CRIT = CONFIG["alerts"]["min_connections_crit"]
 
 # =============================================================================
 # REPORT GENERATION

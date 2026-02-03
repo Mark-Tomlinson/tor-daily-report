@@ -14,7 +14,8 @@ ENV/
 *.swp
 *.swo
 
-# Config with secrets (if you extract config to separate file)
+# Config with secrets
+config.toml
 config.py
 .env
 
