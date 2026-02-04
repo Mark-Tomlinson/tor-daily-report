@@ -100,9 +100,7 @@ min_connections_warn = 100
 min_connections_crit = 50
 ```
 
-**Note:** `config.toml` contains secrets and is excluded from git. Only `config.toml.example` is tracked.
-
-### Control Port Access
+Control Port Access
 
 Your Tor relay must have the control port enabled. In `/etc/tor/torrc`:
 
@@ -143,9 +141,9 @@ crontab -e
 
 This script provides **trend monitoring** - periodic reports on relay health. For **immediate alerts** when your relay goes offline, consider also signing up for [Tor Weather](https://weather.torproject.org/), the Tor Project's official notification service.
 
-| Tool | Purpose | Frequency |
-| ------ | --------- | ----------- |
-| Tor Weather | Relay offline alerts | Immediate |
+| Tool             | Purpose               | Frequency            |
+| ---------------- | --------------------- | -------------------- |
+| Tor Weather      | Relay offline alerts  | Immediate            |
 | tor-daily-report | Health trends & stats | Daily/weekly/monthly |
 
 ## Resources
