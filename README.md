@@ -13,7 +13,7 @@ A Python script that queries your Tor relay's control port and emails you a heal
 
 ## Sample Output
 
-```
+```text
 ============================================================
   TOR RELAY REPORT: OnionPie
   Generated: 2026-02-03 08:00:00
@@ -106,7 +106,7 @@ min_connections_crit = 50
 
 Your Tor relay must have the control port enabled. In `/etc/tor/torrc`:
 
-```
+```text
 ControlPort 9051
 CookieAuthentication 1
 ```
@@ -144,7 +144,7 @@ crontab -e
 This script provides **trend monitoring** - periodic reports on relay health. For **immediate alerts** when your relay goes offline, consider also signing up for [Tor Weather](https://weather.torproject.org/), the Tor Project's official notification service.
 
 | Tool | Purpose | Frequency |
-|------|---------|-----------|
+| ------ | --------- | ----------- |
 | Tor Weather | Relay offline alerts | Immediate |
 | tor-daily-report | Health trends & stats | Daily/weekly/monthly |
 
