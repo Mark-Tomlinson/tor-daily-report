@@ -1,0 +1,7 @@
+raw circuit-established: '0'
+raw bootstrap-phase:     'NOTICE BOOTSTRAP PROGRESS=100 TAG=done SUMMARY="Done"'
+raw reachability-or:     '1'
+strip() == '1':          False
+bool(raw_circuit):       True
+len(raw_circuit):        1
+bytes:                   b'0'

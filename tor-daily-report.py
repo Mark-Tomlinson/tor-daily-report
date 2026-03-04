@@ -138,12 +138,14 @@ def get_relay_report():
             report["address"] = controller.get_info("address", "unknown")
             report["or_port"] = controller.get_conf("ORPort", "9001")
 
-            # Circuit status
-            report["circuits_established"] = controller.get_info("status/circuit-established") == "1"
+            # Relay health status
+            report["or_reachable"] = controller.get_info("status/reachability-succeeded/or", "0").strip() == "1"
+            report["bootstrapped"] = "PROGRESS=100" in controller.get_info("status/bootstrap-phase", "")
 
-            # Count OR connections (other relays)
+            # Count established OR connections (other relays)
             orconn_status = controller.get_info("orconn-status", "")
-            connections = [line for line in orconn_status.strip().split("\n") if line]
+            connections = [line for line in orconn_status.strip().split("\n")
+                           if line and line.endswith("CONNECTED")]
             report["connection_count"] = len(connections)
 
             # Check connection thresholds
@@ -229,8 +231,10 @@ def format_report_text(report):
     # Status
     lines.append("STATUS")
     lines.append("-" * 40)
-    circuit_status = "✅ Established" if report.get("circuits_established") else "❌ NOT Established"
-    lines.append(f"  Circuits:      {circuit_status}")
+    reachable = "✅ Reachable" if report.get("or_reachable") else "❌ NOT Reachable"
+    bootstrapped = "✅ Complete" if report.get("bootstrapped") else "⏳ In Progress"
+    lines.append(f"  ORPort:        {reachable}")
+    lines.append(f"  Bootstrap:     {bootstrapped}")
     lines.append(f"  Connections:   {report.get('connection_count', 'N/A')}")
     lines.append(f"  Uptime:        {report.get('uptime_human', 'N/A')}")
     lines.append(f"  Tor Version:   {report.get('version', 'N/A')}")
